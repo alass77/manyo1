@@ -1,0 +1,49 @@
+fr:
+  activerecord:
+    models:
+      task: tâche
+    attributes:
+      task:
+        title: Titre
+        content: Contenue
+        created_at: Quand c'est fait
+
+  errors:
+    format: "%{attribute}: %{message}"
+    messages:
+      blank: Entrez s'il vous plait
+      too_short: Veuillez entrer un mot de passe d'au moins 6 caractères
+      invalid: Veuillez saisir votre adresse e-mail
+      confirmation: Le mot de passe (confirmation) et la saisie du mot de passe ne correspondent pas
+      taken: L'adresse e-mail est déjà utilisée
+
+  helpers:
+    submit:
+      create: enregistrer
+      update: Mise à jour
+  common:
+    new: Créer un nouveau
+    show: détail
+    edit: modifier
+    destroy: supprimer
+    back: retour
+    confirm_destroy: Es-tu sûr de vouloir le supprimer?
+  tasks:
+    index:
+      title: Page de la liste des tâches
+      new_task: Nouvelle tâche
+      tasks_index: Liste des tâches
+    new:
+      title: Page d'enregistrement des tâches
+    edit:
+      title: Page de la liste des tâches
+      new_task: Nouvelle tâche
+      tasks_index: Liste des tâches
+    show:
+      title: Page de détail de la tâche
+    create:
+      created: enregistré une tâche
+    update:
+      updated: mis à jour la tâche
+    destroy:
+      destroyed: supprimé la tâche

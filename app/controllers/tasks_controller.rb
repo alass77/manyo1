@@ -3,7 +3,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -23,7 +23,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      redirect_to @task, notice: "Task was successfully created."
+      redirect_to @task, notice: "La tâche a été créee avec succès"
     else
       render :new
     end
@@ -32,7 +32,7 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
     if @task.update(task_params)
-      redirect_to tasks_path, notice: "Task was successfully updated." 
+      redirect_to tasks_path, notice: "La tâche a été mis à jour avec succès" 
     else
       render :edit
     end
@@ -41,7 +41,7 @@ class TasksController < ApplicationController
   # DELETE /tasks/1 or /tasks/1.json
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "Task was successfully destroyed."
+    redirect_to tasks_url, notice: "La tâche a été supprimé avec succès"
   end
 
   private
