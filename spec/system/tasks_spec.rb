@@ -49,6 +49,64 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         expect(task_list[1]).to have_text(task1.title)
       end
     end
+
+    describe 'fonction de tri' do
+      context 'Si vous cliquez sur le lien "Expire"' do
+        it "Une liste de tâches triées par ordre croissant de date d'échéance s'affiche." do
+          # Utilisez la méthode all pour vérifier l'ordre de plusieurs données de test.
+          click_link 'expiration date'
+          task_list = all('body tr')
+
+
+          expect(task_list[1]).to have_text(task1.title)
+        end
+      end
+      context "Si vous cliquez sur le lien Priorité" do
+        it "Une liste de tâches triées par priorité s'affiche." do
+          click_link 'priority'
+          task_list = all('body tr')
+
+
+          expect(task_list[1]).to have_text(task1.title)
+        end
+      end
+    end
+    describe 'Fonction de recherche' do
+      context 'Si vous effectuez une recherche floue par Title' do
+        it "Seules les tâches contenant des termes de recherche sont affichées." do
+          fill_in "title", with: "first"
+          click_button "Rechercher"
+          task_list = all('body tbody tr')
+          expect(task_list.count).to eq 1
+          expect(task_list.first).to have_content "first_task"
+          expect(task_list.first).not_to have_content "second_task"
+          expect(task_list.first).not_to have_content "third_task"
+        end
+      end
+      context 'Recherche par statut.' do
+        it "Seules les tâches correspondant à l'état recherché sont affichées." do
+          select "Terminé", from: "search[status]"
+          click_button "Rechercher"
+          task_list = all('body tbody tr')
+          expect(task_list.count).to eq 1
+          expect(task_list.first).not_to have_content "first_task"
+          expect(task_list.first).not_to have_content "second_task"
+          expect(task_list.first).to have_content "third_task"
+        end
+      end
+      context 'Title et rechercher par statut' do
+        it "Seules les tâches qui contiennent le mot de recherche Title et qui correspondent au statut seront affichées." do
+          fill_in "title", with: "first"
+          select "Non_démarré", from: "search[status]"
+          click_button "Rechercher"
+          task_list = all('body tbody tr')
+          expect(task_list.count).to eq 1
+          expect(task_list.first).to have_content "first_task"
+          expect(task_list.first).not_to have_content "second_task"
+          expect(task_list.first).not_to have_content "third_task"
+        end
+      end
+    end
   end
 
   describe 'Fonction daffichage détaillée' do
