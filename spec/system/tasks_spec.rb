@@ -64,7 +64,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
           expect(task_list[3]).to have_text(task1.title)
         end
       end
-      context "Si vous cliquez sur le lien Priorité" do
+      context "Si vous cliquez sur le lien Priorité." do
         it "Une liste de tâches triées par priorité s'affiche." do
           click_link 'priority'
           visit current_url
