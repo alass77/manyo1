@@ -17,5 +17,20 @@
   <%= @task.created_at %>
 </p>
 
+<p>
+  <strong>expiration_date</strong>
+  <%= @task.deadline_on %>
+</p>
+
+<p>
+  <strong>priority</strong>
+  <%= @task.priority %>
+</p>
+
+<p>
+  <strong>status</strong>
+  <%= @task.status %>
+</p>
+
 <%= link_to t('common.edit'), edit_task_path(@task) %> |
 <%= link_to t('common.back'), tasks_path %>
