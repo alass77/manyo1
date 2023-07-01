@@ -4,11 +4,11 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     if params[:sort_deadline_on]
-      tasks = Task.sort_deadline_on.sort_created_at
+      tasks = current_user.tasks.sort_deadline_on.sort_created_at
     elsif params[:sort_priority]
-      tasks = Task.sort_priority.sort_created_at
+      tasks = current_user.tasks.sort_priority.sort_created_at
     else
-      tasks = Task.sort_created_at
+      tasks = current_user.tasks.sort_created_at
     end
     
     if params[:search].present?
@@ -40,10 +40,12 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
+    @task.user = current_user
+
     if @task.save
-      redirect_to @task, notice: "La tâche a été créee avec succès"
+      redirect_to tasks_path, notice: "La tâche a été créée avec succès"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

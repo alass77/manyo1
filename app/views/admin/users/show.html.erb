@@ -1,0 +1,33 @@
+<h1>Page de détails de l'utilisateur</h1> 
+<h2>Nom &nbsp<%= @user.name %> </h2>
+<p>Email adress &nbsp<%= @user.email %></ul></p>
+<p>privilege &nbsp<%= @user.admin ? 'Oui' : 'Non'%></ul></p>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= Task.human_attribute_name(:title) %></th>
+      <th><%= Task.human_attribute_name(:content) %></th>
+      <th><%= Task.human_attribute_name(:created_at)%></th>
+      <th> <%= link_to "expiration date" %></th>
+      <th><%= link_to "priority"%></th>
+      <th> status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user.tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= task.created_at.strftime('%Y-%m-%d %H:%M')   %></td>
+        <td><%= task.deadline_on%></td>
+        <td><%= task.priority%></td>
+        <td><%= task.status%></td>
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
+<%= link_to t('common.back'), admin_users_path %>
