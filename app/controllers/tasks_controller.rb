@@ -12,35 +12,37 @@ class TasksController < ApplicationController
     end
     
     if params[:search].present?
-      if params[:search][:status].present? && params[:search][:title].present?
-        tasks = tasks.search_status(params[:search][:status]).search_title(params[:search][:title])
-      elsif params[:search][:status].present?
-        tasks = tasks.search_status(params[:search][:status])
-      elsif params[:search][:title].present?
-        tasks = tasks.search_title(params[:search][:title])
-      end
+      tasks = tasks.search_status(params[:search][:status]) if params[:search][:status].present?
+      tasks = tasks.search_title(params[:search][:title]) if params[:search][:title].present?
+      tasks = tasks.search_label_id(params[:search][:label_id]) if params[:search][:label_id].present?
     end
 
     @tasks = tasks.page(params[:page]).per(10)
+    @labels = current_user.labels.pluck(:name, :id)
   end
 
   # GET /tasks/1 or /tasks/1.json
   def show
+    current_user_required(@task.user)
   end
 
   # GET /tasks/new
   def new
     @task = Task.new
+    @labels = current_user.labels
   end
 
   # GET /tasks/1/edit
   def edit
+    current_user_required(@task.user)
+    @labels = current_user.labels
   end
 
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
     @task.user = current_user
+    @task.labels << current_user.labels.where(id: params[:task][:label_ids])
 
     if @task.save
       redirect_to tasks_path, notice: "La tâche a été créée avec succès"
@@ -60,8 +62,14 @@ class TasksController < ApplicationController
 
   # DELETE /tasks/1 or /tasks/1.json
   def destroy
-    @task.destroy
-    redirect_to tasks_url, notice: "La tâche a été supprimé avec succès"
+    @task.labels.clear
+    @task.labels << current_user.labels.where(id: params[:task][:label_ids])
+
+    if @task.update(task_params)
+      redirect_to tasks_path, notice: "La tâche a été supprimé avec succès" 
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private

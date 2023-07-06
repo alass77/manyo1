@@ -133,6 +133,26 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
           expect(task_list.first).not_to have_content "third_task"
         end
       end
+      context "Lors d'une recherche par étiquette." do
+        let!(:label_1) { FactoryBot.create(:label, name: "label1", user: user) }
+        let!(:label_2) { FactoryBot.create(:label, name: "label2", user: user) }
+        
+        before do
+          task1.labels << label_1
+          task2.labels << label_2
+        end
+
+        it "Toutes les tâches portant cette étiquette sont affichées." do
+          visit current_path
+          select label_1.name, from: "search[label_id]"
+          click_button "Rechercher"
+          task_list = all('body tbody tr')
+          expect(task_list.count).to eq 1
+          expect(task_list.first).to have_content "first_task"
+          expect(task_list.first).not_to have_content "second_task"
+          expect(task_list.first).not_to have_content "third_task"
+        end
+      end
     end
   end
 
