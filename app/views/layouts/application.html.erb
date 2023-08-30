@@ -6,28 +6,50 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+
+
   <body>
-    <% flash.each do |key, value| %>
-      <%= content_tag(:div, value, class: "#{key}") %>
-    <% end %>
-    <% if logged_in? %>
-    <ul>
-    <li><%= link_to "Liste des utilisateurs", admin_users_path%></li>
-    <li><%= link_to "Enregistrer un utilisateur", new_admin_user_path %></li>
-    <li><%= link_to "Task column", tasks_path%></li>
-    <li><%= link_to "Register a task", new_task_path %></li>
-    <li><%= link_to "Account", user_path(current_user.id) %></li>
-    <li><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>
-    </ul>
-    <% else %>
-    <ul>
-    <li><%= link_to "Account registration", new_user_path %></li>
-    <li><%= link_to "Login", new_session_path %></li>
-    </ul>
-    <% end %>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <%= link_to "Manyo Task", root_path, class: "navbar-brand" %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+
+          <% flash.each do |key, value| %>
+            <%= content_tag(:div, value, class: "#{key}") %>
+          <% end %>
+          <% if logged_in? %>
+          <%= link_to "Liste des utilisateurs", admin_users_path, class: "nav-item nav-link"%>
+          <%= link_to "Enregistrer un utilisateur", new_admin_user_path, class: "nav-item nav-link" %>
+          <%= link_to "Task column", tasks_path, class: "nav-item nav-link"%>
+          <%= link_to "Register a task", new_task_path, class: "nav-item nav-link" %>
+          <%= link_to "Liste des étiquettes", labels_path, class: "nav-item nav-link"%>
+          <%= link_to "Enregistrer une étiquette", new_label_path, class: "nav-item nav-link" %>
+          <%= link_to "Account", user_path(current_user.id), class: "nav-item nav-link" %>
+          <%= link_to "Logout", session_path(current_user.id), method: :delete, class: "nav-item nav-link" %>
+          <% else %>
+          <ul>
+          <li><%= link_to "Account registration", new_user_path %></li>
+          <li><%= link_to "Login", new_session_path %></li>
+          </ul>
+          <% end %>
+
+        </div>
+      </div>
+    </nav>
+
+    
+
+      
+
+    <div class='container mt-5'>
     <%= yield %>
+    </div>
   </body>
 </html>
